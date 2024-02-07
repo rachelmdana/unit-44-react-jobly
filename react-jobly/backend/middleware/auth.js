@@ -5,7 +5,6 @@
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../config");
 const { UnauthorizedError } = require("../expressError");
-const cors  = require('cors');
 
 /** Middleware: Authenticate user.
  *
@@ -15,10 +14,7 @@ const cors  = require('cors');
  * It's not an error if no token was provided or if the token is not valid.
  */
 
-const corsOptions = {
-  origin: "http://localhost:3000",
-  optionsSuccessStatus: 200
-}
+
 
 function authenticateJWT(req, res, next) {
   try {
@@ -89,5 +85,3 @@ module.exports = {
   ensureAdmin,
   ensureCorrectUserOrAdmin,
 };
-
-app.use(cors(corsOptions));

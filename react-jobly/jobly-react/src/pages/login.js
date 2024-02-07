@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { JoblyApi } from '../api';
+import axios  from 'axios';
 
 const LoginForm = ({ handleLogin }) => {
   const [formData, setFormData] = useState({
@@ -11,14 +12,26 @@ const LoginForm = ({ handleLogin }) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value,
+      [name]: value.trim(),
     }));
   };
 
   const handleSubmit = async (event, handleLogin) => {
     event.preventDefault();
+    if (!formData.username || !formData.password) {
+      console.error('Missing username or password');
+      return;
+    }
+    console.log('Form data:', formData);
     try {
-      await JoblyApi.login(formData.username, formData.password);
+      const payload = {
+        username: formData.username,
+        password: formData.password,
+      };
+      console.log('Request payload:', payload);
+      const response = await JoblyApi.login(payload);
+      console.log('Request headers:', axios.defaults.headers);
+      console.log('API response:', response);
       handleLogin();
     } catch (error) {
       console.error('Login failed:', error);
@@ -46,3 +59,6 @@ const LoginForm = ({ handleLogin }) => {
 };
 
 export default LoginForm;
+
+
+
